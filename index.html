@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Silla Nórdica · Furniture Experts</title>
+<meta name="description" content="Prototipo académico: tienda ficticia con guía de armado en 3D y realidad aumentada desarrollada por AR Innovation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/sitio.css">
+<link rel="stylesheet" href="css/guia.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+  "@sparkjsdev/spark": "https://cdn.jsdelivr.net/npm/@sparkjsdev/spark@2.4.0/dist/spark.module.js"
+} }
+</script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.1.0/dist/model-viewer.min.js"></script>
+</head>
+<body>
+
+<!-- ============================================================ encabezado -->
+<header class="barra">
+  <a class="marca" href="#" aria-label="Furniture Experts, inicio">
+    <span class="sello" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V11h12v10M6 15h12M8 11V4h8v7"/></svg>
+    </span>
+    Furniture Experts
+  </a>
+  <nav class="menu" aria-label="Categorías">
+    <a href="#" class="activo">Sillas</a>
+    <a href="#" data-pronto>Mesas</a>
+    <a href="#" data-pronto>Iluminación</a>
+    <a href="#" data-pronto>Textiles</a>
+  </nav>
+  <label class="buscador">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input type="search" placeholder="Buscar muebles" aria-label="Buscar muebles">
+  </label>
+  <button class="carrito-btn" id="btnCarrito" aria-label="Abrir carrito">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20.5" r="1.2"/><circle cx="17" cy="20.5" r="1.2"/></svg>
+    <span class="n contador" id="contadorCarrito">0</span>
+  </button>
+</header>
+
+<main>
+  <nav class="migas" aria-label="Ruta">
+    <a href="#">Inicio</a><span>/</span><a href="#">Sillas</a><span>/</span><span>Silla Nórdica</span>
+  </nav>
+
+  <!-- ============================================================ producto -->
+  <section class="producto">
+    <div class="galeria tarjeta">
+      <div class="visor" id="visorProducto">
+        <canvas id="canvasProducto" aria-label="Vista 3D de la Silla Nórdica"></canvas>
+        <span class="etiqueta-3d">3D · arrastra para girar</span>
+      </div>
+      <div class="vistas" role="tablist" aria-label="Vistas del producto">
+        <button class="vista activa" data-vista="giro" role="tab">Giro</button>
+        <button class="vista" data-vista="frente" role="tab">Frente</button>
+        <button class="vista" data-vista="lado" role="tab">Lateral</button>
+        <button class="vista" data-vista="detalle" role="tab">Detalle</button>
+        <button class="vista" data-vista="explosion" role="tab">Piezas</button>
+      </div>
+    </div>
+
+    <div class="ficha">
+      <span class="pastilla">Nuevo · Colección Fresno</span>
+      <h1>Silla Nórdica</h1>
+      <div class="valoracion-mini"><span class="estrellas" id="estrellasMini"></span><a href="#resenas" class="n" id="resumenMini"></a></div>
+      <p class="precio n" id="precio">Q 895.00</p>
+      <p class="descripcion">Silla de comedor en madera maciza de fresno con asiento ergonómico. Llega en caja plana y se arma en unos 15 minutos con nuestra <strong>guía 3D paso a paso</strong>: sin manual de papel, sin piezas confundidas.</p>
+
+      <fieldset class="opciones">
+        <legend>Acabado · <span id="nombreAcabado">Natural</span></legend>
+        <div class="muestras" id="muestras"></div>
+      </fieldset>
+
+      <div class="compra">
+        <div class="cantidad" aria-label="Cantidad">
+          <button id="menos" aria-label="Quitar una">−</button>
+          <span class="n" id="cantidad">1</span>
+          <button id="mas" aria-label="Agregar una">+</button>
+        </div>
+        <button class="btn primario" id="agregar">Agregar al carrito</button>
+      </div>
+
+      <div class="acciones-ar">
+        <button class="btn guia-btn" id="abrirGuia">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>
+          Cómo armarla · guía 3D
+        </button>
+        <button class="btn secundario" id="abrirAR">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg>
+          Ver en mi espacio (AR)
+        </button>
+      </div>
+
+      <ul class="datos">
+        <li><span>Medidas</span><span class="n">46 × 44 × 90 cm</span></li>
+        <li><span>Altura del asiento</span><span class="n">45 cm</span></li>
+        <li><span>Material</span><span>Fresno macizo, herrajes de acero</span></li>
+        <li><span>Armado</span><span>9 piezas · 16 herrajes · llave incluida</span></li>
+        <li><span>Envío</span><span>2 a 4 días hábiles</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================ cómo armarla -->
+  <section class="tarjeta armado-promo" id="como-armarla">
+    <div class="armado-texto">
+      <span class="sello-ari">Guía AR por <strong>AR Innovation</strong></span>
+      <h2>Cómo armarla</h2>
+      <p>Olvida el manual de dibujos. La guía te muestra cada pieza en 3D, anima cómo encaja y señala el agujero exacto donde va cada tornillo. Si eliges un herraje equivocado o colocas una pieza al revés, te avisa antes de que avances.</p>
+      <ol class="pasos-promo">
+        <li><span class="n">1</span>Revisa que la caja traiga todas las piezas</li>
+        <li><span class="n">2</span>Sigue 7 pasos animados sobre la silla en 3D</li>
+        <li><span class="n">3</span>Colócala en tu espacio con realidad aumentada</li>
+      </ol>
+      <button class="btn primario" id="abrirGuia2">Empezar la guía</button>
+    </div>
+    <div class="armado-figura" aria-hidden="true" id="figuraArmado"></div>
+  </section>
+
+  <!-- ============================================================ combina con -->
+  <section class="bloque" id="combina">
+    <div class="bloque-cab">
+      <h2>Combina con</h2>
+      <p>Piezas de la misma colección, elegidas para tu Silla Nórdica.</p>
+    </div>
+    <div class="sugeridos" id="sugeridos"></div>
+  </section>
+
+  <!-- ============================================================ reseñas -->
+  <section class="bloque" id="resenas">
+    <div class="bloque-cab">
+      <h2>Reseñas</h2>
+      <span class="nota-demo">Contenido de demostración · reseñas ficticias</span>
+    </div>
+    <div class="resenas-layout">
+      <aside class="tarjeta resumen-resenas">
+        <div class="promedio"><span class="n" id="promedio">0.0</span><span class="estrellas" id="estrellasProm"></span><span class="texto-3" id="totalResenas"></span></div>
+        <div class="barras" id="barras"></div>
+        <button class="btn secundario ancho" id="escribirResena">Escribir una reseña</button>
+      </aside>
+      <div class="resenas-col">
+        <div class="filtros" id="filtros">
+          <button class="filtro activo" data-filtro="todas">Todas</button>
+          <button class="filtro" data-filtro="armado">Mencionan el armado</button>
+          <button class="filtro" data-filtro="foto">Con foto</button>
+          <select id="orden" aria-label="Ordenar reseñas">
+            <option value="recientes">Más recientes</option>
+            <option value="utiles">Más útiles</option>
+            <option value="altas">Mejor calificadas</option>
+            <option value="bajas">Peor calificadas</option>
+          </select>
+        </div>
+        <div class="lista-resenas" id="listaResenas"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="pie-cols">
+    <div>
+      <span class="marca chica">Furniture Experts</span>
+      <p>Muebles de madera maciza para armar en casa.</p>
+    </div>
+    <div><h4>Tienda</h4><a href="#">Sillas</a><a href="#">Mesas</a><a href="#">Iluminación</a></div>
+    <div><h4>Ayuda</h4><a href="#">Envíos</a><a href="#">Garantía</a><a href="#como-armarla">Guías de armado</a></div>
+    <div class="pie-ari">
+      <h4>Experiencia AR</h4>
+      <p>Desarrollada por <strong>AR Innovation</strong></p>
+    </div>
+  </div>
+  <p class="pie-legal">Prototipo académico · Furniture Experts y AR Innovation son empresas ficticias. Precios, productos y reseñas son de demostración.</p>
+</footer>
+
+<!-- ============================================================ carrito -->
+<aside class="cajon" id="cajon" aria-hidden="true" aria-label="Carrito">
+  <div class="cajon-cab"><h3>Tu carrito</h3><button class="cerrar" data-cerrar="cajon" aria-label="Cerrar carrito">×</button></div>
+  <div class="cajon-items" id="itemsCarrito"></div>
+  <div class="cajon-pie">
+    <div class="total"><span>Total</span><span class="n" id="totalCarrito">Q 0.00</span></div>
+    <button class="btn primario ancho" id="pagar">Ir a pagar</button>
+  </div>
+</aside>
+<div class="velo" id="velo"></div>
+
+<!-- ============================================================ reseña nueva -->
+<dialog class="dialogo" id="dlgResena">
+  <form method="dialog" id="formResena">
+    <h3>Escribir una reseña</h3>
+    <label>Calificación
+      <div class="selector-estrellas" id="selectorEstrellas" role="radiogroup" aria-label="Calificación"></div>
+    </label>
+    <label>Tu nombre<input name="nombre" required maxlength="40" placeholder="Ej. Ana P."></label>
+    <label>Título<input name="titulo" required maxlength="80" placeholder="Resume tu experiencia"></label>
+    <label>Comentario<textarea name="texto" required maxlength="600" rows="4" placeholder="¿Qué te pareció la silla y el armado?"></textarea></label>
+    <label class="check"><input type="checkbox" name="armado"> Usé la guía de armado 3D</label>
+    <p class="texto-3 chico">Demo: la reseña se guarda solo en este navegador.</p>
+    <div class="dialogo-acciones">
+      <button type="button" class="btn secundario" value="cancel" id="cancelarResena">Cancelar</button>
+      <button type="submit" class="btn primario" value="ok">Publicar</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ============================================================ AR -->
+<dialog class="dialogo dialogo-ar" id="dlgAR">
+  <div class="ar-cab">
+    <h3>Ver en mi espacio</h3>
+    <button class="cerrar" id="cerrarAR" aria-label="Cerrar">×</button>
+  </div>
+  <model-viewer id="mv" src="assets/silla.glb" alt="Silla Nórdica en 3D" ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor" camera-controls touch-action="pan-y" shadow-intensity="1" exposure="1.05" camera-orbit="35deg 70deg auto">
+    <button slot="ar-button" class="btn primario btn-ar-slot">Colocar en mi piso</button>
+  </model-viewer>
+  <p class="texto-3 chico ar-nota">En un celular compatible, toca «Colocar en mi piso» y apunta al suelo. En computadora puedes girar el modelo.</p>
+</dialog>
+
+<!-- ============================================================ guía -->
+<section class="guia" id="guia" aria-hidden="true" aria-label="Guía de armado 3D">
+  <canvas id="canvasGuia"></canvas>
+
+  <header class="guia-cab">
+    <div class="guia-titulo">
+      <span class="marca chica">Furniture Experts</span>
+      <span class="sep">·</span>
+      <span>Guía de armado · Silla Nórdica</span>
+    </div>
+    <span class="sello-ari">Guía AR por <strong>AR Innovation</strong></span>
+    <button class="cerrar grande" id="cerrarGuia" aria-label="Cerrar la guía">×</button>
+  </header>
+
+  <!-- progreso -->
+  <ol class="guia-progreso" id="progreso"></ol>
+
+  <!-- inventario -->
+  <div class="guia-panel inventario" id="panelInventario">
+    <div class="panel-cab">
+      <span class="n paso-num">Antes de empezar</span>
+      <h2>¿Llegó todo en la caja?</h2>
+      <p>Marca cada pieza y herraje al encontrarlo. Las letras y códigos coinciden con las etiquetas de la caja.</p>
+    </div>
+    <div class="inv-grid" id="invGrid"></div>
+    <div class="panel-pie">
+      <button class="btn texto" id="faltaPieza">Me falta una pieza</button>
+      <span class="n texto-3" id="invConteo"></span>
+      <button class="btn primario" id="empezarArmado" disabled>Empezar el armado</button>
+    </div>
+  </div>
+
+  <!-- paso -->
+  <div class="guia-panel paso" id="panelPaso" hidden>
+    <div class="panel-cab">
+      <span class="n paso-num" id="pasoNum">Paso 1 de 7</span>
+      <span class="critico-tag" id="criticoTag" hidden>Paso crítico</span>
+      <h2 id="pasoTitulo"></h2>
+      <p id="pasoTexto"></p>
+    </div>
+    <div class="usa" id="pasoUsa"></div>
+    <div class="aviso" id="aviso" hidden></div>
+    <div class="orientacion" id="orientacion" hidden>
+      <button class="btn secundario" id="girarPieza">↻ Girar los travesaños</button>
+      <button class="btn primario" id="confirmarOrientacion">Así están bien</button>
+    </div>
+    <div class="panel-pie">
+      <button class="btn texto" id="anterior">← Anterior</button>
+      <button class="btn texto" id="repetir">↺ Repetir animación</button>
+      <button class="btn texto" id="pista">Ver pista</button>
+      <button class="btn primario" id="siguiente" disabled>Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- fin -->
+  <div class="guia-panel fin" id="panelFin" hidden>
+    <div class="panel-cab">
+      <span class="n paso-num">Listo</span>
+      <h2>¡Tu Silla Nórdica está armada!</h2>
+      <p>Así fue tu armado:</p>
+    </div>
+    <div class="fin-metricas" id="finMetricas"></div>
+    <table class="fin-tabla" id="finTabla"></table>
+    <div class="panel-pie">
+      <button class="btn texto" id="exportarCSV">Descargar registro (CSV)</button>
+      <button class="btn secundario" id="reiniciarGuia">Armar de nuevo</button>
+      <button class="btn primario" id="finAR">Verla en mi espacio</button>
+    </div>
+  </div>
+
+  <!-- bandeja de herrajes -->
+  <div class="bandeja" id="bandeja" hidden></div>
+
+  <!-- controles de vista -->
+  <div class="vista-ctrl" id="vistaCtrl">
+    <button id="btnExplosion" aria-pressed="false" title="Vista explosionada">Explosionar</button>
+    <button id="btnCentrar" title="Volver a centrar la cámara">Centrar</button>
+  </div>
+
+  <div class="etiqueta-pieza" id="etiquetaPieza" hidden></div>
+</section>
+
+<div class="aviso-flotante" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="js/tienda.js"></script>
+<script type="module" src="js/guia/guia.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+/*
+ * Tokens del sitio de Furniture Experts.
+ *
+ * Adaptados de la dirección visual de Condoal (portal/src/estilos/tokens.css).
+ * Misma regla: el color no decora, significa estado.
+ *   acento   → acción principal y la pieza del paso actual
+ *   atención → algo no cuadra (tornillo equivocado, pista usada)
+ *   favor    → correcto, paso completado, pieza recibida
+ *   peligro  → solo el bloqueo de un paso crítico
+ */
+:root {
+  /* superficies */
+  --fondo: #f3f4f7;
+  --superficie: #ffffff;
+  --superficie-tenue: #f7f8fa;
+  --linea: #edeff3;
+  --linea-fuerte: #e4e7ee;
+
+  /* texto */
+  --texto: #14161a;
+  --texto-2: #5b6170;
+  --texto-3: #868c9b;
+  --texto-4: #a2a8b5;
+
+  /* acento */
+  --acento: #2f4bd8;
+  --acento-tenue: #e8ecfb;
+
+  /* estados */
+  --atencion: #9a6a08;
+  --atencion-texto: #6b4a06;
+  --atencion-fondo: #fdf6e8;
+  --atencion-linea: #f0dfba;
+
+  --favor: #16704f;
+  --favor-texto: #11543c;
+  --favor-fondo: #eaf6f0;
+
+  --peligro: #a4322a;
+  --peligro-fondo: #fbeceb;
+
+  /* forma */
+  --radio-tarjeta: 20px;
+  --radio-control: 11px;
+  --radio-campo: 9px;
+  --radio-etiqueta: 6px;
+  --radio-pastilla: 999px;
+
+  --sombra-tarjeta: 0 1px 2px rgba(20, 22, 26, 0.05), 0 12px 32px rgba(20, 22, 26, 0.04);
+  --sombra-menu: 0 1px 2px rgba(20, 22, 26, 0.05);
+  --sombra-flotante: 0 2px 6px rgba(20, 22, 26, 0.06), 0 18px 48px rgba(20, 22, 26, 0.12);
+
+  /* tipografía */
+  --sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
