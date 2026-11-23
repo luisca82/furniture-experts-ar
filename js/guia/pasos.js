@@ -63,7 +63,7 @@ export const PASOS = [
     colocan: ['C'],
     herraje: 'H2',
     agujeros: ['D_L_H2_1', 'D_L_H2_2', 'D_R_H2_1', 'D_R_H2_2'],
-    camara: { pos: [0, 0.03, 0.45], obj: [0, 0.38, 0] },
+    camara: { pos: [0, 0.13, 0.5], obj: [0, 0.38, 0] },
   },
   {
     titulo: 'Aprieta todos los pernos',

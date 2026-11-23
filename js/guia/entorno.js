@@ -3,7 +3,10 @@
 // Si existe assets/sala.spz (generada con World Labs Atlas), se carga con
 // Spark como fondo inmersivo. Su posición, giro y escala se ajustan en
 // assets/sala.json, por ejemplo:
-//   { "pos": [0, 0, 0], "rotY": 0, "escala": 1, "quat": [1, 0, 0, 0] }
+//   { "pos": [0, 0, 0], "rotY": 0, "escala": 1, "quat": [1, 0, 0, 0],
+//     "limites": { "min": [-2, 0.15, -1.5], "max": [3, 2.2, 2] } }
+// «limites» es la caja (en coordenadas de la guía) de la que la cámara no sale,
+// para que al girar no atraviese las paredes.
 // Si no existe o falla, se arma una sala simple con piso y dos paredes.
 
 import * as THREE from 'three';
@@ -54,6 +57,9 @@ export async function cargarEntorno(esc) {
       if (conf.pos) sala.position.set(...conf.pos);
       if (conf.escala) sala.scale.setScalar(conf.escala);
       scene.add(sala);
+      if (conf.limites) {
+        esc.limites = new THREE.Box3(new THREE.Vector3(...conf.limites.min), new THREE.Vector3(...conf.limites.max));
+      }
       // Piso invisible que solo recibe la sombra de la silla.
       const sombra = new THREE.Mesh(new THREE.PlaneGeometry(4, 4), new THREE.ShadowMaterial({ opacity: 0.25 }));
       sombra.rotation.x = -Math.PI / 2;

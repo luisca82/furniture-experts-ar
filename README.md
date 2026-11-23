@@ -42,6 +42,21 @@ Luego se abre http://localhost:8765. La página necesita internet para cargar la
 
 ## Pendiente
 
-- **Sala de Atlas:** generar `assets/sala.spz` y, si hace falta, `assets/sala.json` con `pos`, `rotY`, `escala` y `quat`. Mientras no exista, la guía usa una sala simple y en la consola aparece un 404 esperado.
 - Probar la AR en celulares reales.
-- Publicar en una URL estática (GitHub Pages, Netlify, etc.).
+
+## Sala de Atlas
+
+`assets/sala.spz` (2 millones de splats, 31 MB) se generó el 23/11/2026 con World Labs Atlas:
+
+1. Una imagen de partida creada a partir de texto (`atlasTextToImage`) de una sala nórdica.
+2. Su cámara y profundidad (`images2PosedRGBD`).
+3. 11 vistas nuevas en 3 rondas (`atlasGenerate`).
+4. La reconstrucción refinada (`posedImages2Splats`, operación `a7ad75ceaebd408cb0b3dad8ca0abf40`).
+
+Todo el cuarto lo generó el modelo. Del lado de la puerta inventó un comedor contiguo que no se ve en la imagen original.
+
+`assets/sala.json` pone la alfombra debajo de la silla (`pos`), agranda la sala un 25 % (`escala`) y define `limites`, la caja de la que la cámara no sale, para que al girar no atraviese las paredes. Si se borra `sala.spz`, la guía vuelve a usar la sala simple.
+
+## Publicación
+
+https://luisca82.github.io/furniture-experts-ar/ (GitHub Pages, repo `luisca82/furniture-experts-ar`).

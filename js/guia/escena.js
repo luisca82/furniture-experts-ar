@@ -101,6 +101,8 @@ export function crearEscena(canvas, { fondo = null, sombras = true, fov = 38 } =
     const dt = reloj.getDelta();
     for (const f of alCuadro) f(dt, ahora);
     controls.update();
+    // Con la sala de Atlas, la cámara no sale del cuarto (ver entorno.js).
+    if (api.limites) camera.position.clamp(api.limites.min, api.limites.max);
     renderer.render(scene, camera);
   }
 
@@ -129,6 +131,7 @@ export function crearEscena(canvas, { fondo = null, sombras = true, fov = 38 } =
     alCuadro: (f) => alCuadro.add(f),
     pausar: (v) => { activo = !v; },
     desplazamiento: null,
+    limites: null,
   };
   bucle();
   return api;

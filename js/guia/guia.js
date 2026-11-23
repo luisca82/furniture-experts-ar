@@ -654,7 +654,7 @@ $('reiniciarGuia').addEventListener('click', () => {
 $('finAR').addEventListener('click', () => window.dispatchEvent(new Event('abrir-ar')));
 
 // Gancho para pruebas automáticas (no lo usa la interfaz).
-window.__guia = { tocarAgujero, estado: () => ({ modo, paso: n + 1, completo, herrajeSel, hechos: [...hechos], girados: [...girados] }), pasos: PASOS };
+window.__guia = { tocarAgujero, irPaso, estado: () => ({ modo, paso: n + 1, completo, herrajeSel, hechos: [...hechos], girados: [...girados] }), pasos: PASOS };
 
 // ================================================================== miniaturas
 function generarMiniaturas() {
